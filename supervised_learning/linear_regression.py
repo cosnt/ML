@@ -17,7 +17,7 @@ class LinerRegre(object):
             batch_train_data, batch_trian_label = get_batch(self.data.trian_data, self.data.train_label, self.parm.batch)
             predict_value = np.matmul(self.data.trainSet, self.theta)
             self.theta += self.parm.alpha*np.mean((predict_value - batch_trian_label)*batch_train_data,axis=0)
-            loss  = mean_squared_error(predict_value,batch_trian_label)
+            loss = mean_squared_error(predict_value,batch_trian_label)
             self.cost.append(loss)
 
     def predict(self):

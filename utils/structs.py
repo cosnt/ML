@@ -11,10 +11,10 @@ class OptimizationParm(object):
 class Data(object):
     def __init__(self, file_name, data_shape = None, data_type = None):
         self.data = self.load_data(file_name, data_shape, data_type)
-        self.trainSet = None
-        self.trainLabel = None
-        self.testSet = None
-        self.testLabel = None
+        self.train_data = None
+        self.train_label = None
+        self.test_data = None
+        self.test_label = None
         self.norm_mode = None
         self.mena = None
         self.std = None
@@ -39,6 +39,7 @@ class Data(object):
             for index in range(set_lens):
                 temp = lines[index]
                 self.data[index,:] = temp
+        self.save_as_bin(file_name)
 
     def load_txt(self,file_name):
         with open(file_name, 'rb') as reader:
@@ -48,17 +49,21 @@ class Data(object):
             for index in range(set_lens):
                 temp = lines[index]
                 self.data[index,:] = temp
+        self.save_as_bin(file_name)
 
     def load_bin(self, file_name, data_shape, data_type):
         file_name = '../data_warehouse/local_data/' + file_name
         self.data = np.fromfile(file_name, dtype=data_type)
         self.data.shape = data_shape
 
-    def save_as_bin(self, file_name):
+    def save_as_bin(self, file_name, fileparm_name = 'file_parm.txt'):
         store_path = '../data_warehouse/local_data/'
-        file_name = store_path + file_name
-        self.data.tofile(file_name)
-        with open('../data_warehose/local_data/file_parm.txt','ab') as write:
-            pass
+        fileparm_name = store_path + fileparm_name
+        file_name = ''.join(file_name.split('.')[:-1])+'.bin'
+        self.data.tofile(store_path+file_name)
+        with open(fileparm_name,'ab') as writer:
+            infors = file_name + '/t' + str(self.data.shape) + '/t' + str(np.dtype(self.data)) + '/n'
+            writer.write(infors)
+
 
 

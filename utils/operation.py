@@ -78,6 +78,15 @@ def code_one_hit(label, classfy_num):
         one_hot[index, label[index]] = 1
     return one_hot
 
+def multi2one(labels,classfy_no):
+    one_label = np.zeros(labels.shape)
+    one_label[labels==classfy_no] = 1
+    return one_label
+
+def cross_entropy(y_pred, y_true):
+    temp = np.mean(y_true*np.log(y_pred)+(1-y_true)*np.log(1-y_pred),axis=0)
+    return np.sum(temp,axis=1)
+
 def split_data(data):
     pass
 
