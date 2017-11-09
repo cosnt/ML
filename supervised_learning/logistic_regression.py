@@ -23,7 +23,7 @@ class LogRegres(object):
             for index in range(classfy_num):
                 one_label = multi2one(train_label_batch, index)
                 self.theta[:,index] +=  self.parm.alpha*np.mean(
-                    (one_label - sigmoid(np.matmul(train_data_batch,self.theta[:,index])))*train_data_batch,axis=0)
+                    (one_label - sigmoid(np.matmul(train_data_batch,self.theta[:,index])))*train_data_batch,axis=0).T
             y_pred = sigmoid(np.matmul(train_data_batch,self.theta))
             loss = cross_entropy(y_pred,train_label_batch)
             self.cost.append(loss)

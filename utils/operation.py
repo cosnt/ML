@@ -71,7 +71,7 @@ def euclidean_distance(x1, x2):
     temp = x1 - x2
     return np.sqrt(temp*temp.T)
 
-def code_one_hit(label, classfy_num):
+def code_one_hot(label, classfy_num):
     set_lens = len(label)
     one_hot = np.zeros((set_lens, classfy_num))
     for index in range(label):
