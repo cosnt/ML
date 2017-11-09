@@ -1,6 +1,8 @@
 import numpy as np
 
 from utils.structs import Data, OptimizationParm
+from utils.operation import code_one_hot
+
 
 class OptimizationParameters(object):
     pass
@@ -24,6 +26,8 @@ class NaiveBayes(object):
             self._fit_polynomial()
         elif mode == 'gaussian':
             self._fit_gaussian()
+        elif mode == 'gda':
+            self._fit_gaussian_discriminant_analysis()
         else:
             print('not support')
 
@@ -33,9 +37,23 @@ class NaiveBayes(object):
         self.theta_y1 = np.sum((1-self.data.train_data)*self.data.train_label,axis=0)/np.sum(self.data.train_label)
 
     def _fit_polynomial(self):
+        #multi-multi
+        one_hot = code_one_hot(self.data.train_label)
+        self.alpha = np.mean(one_hot,axis=0)
+
+        #conditional_probability k(features num) * m(feature num) *n(class num)
+        self.conditional_probability = {}
+        feat_num = len(self.data.train_data[0])
+        for index in range(feat_num):
+            self.conditional_probability[str(index)] = self.data.train_data[:,index]
+
+
         pass
 
     def _fit_gaussian(self):
+        pass
+
+    def _fit_gaussian_discriminant_analysis(self):
         pass
 
     def predict(self, mode):
