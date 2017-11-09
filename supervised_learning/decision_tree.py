@@ -1,6 +1,9 @@
 import numpy as np
 import math
 
+class OptimizationParameters(object):
+    pass
+
 class DecTree(object):
     def __init__(self,parm):
         pass

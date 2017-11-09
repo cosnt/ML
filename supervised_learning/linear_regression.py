@@ -5,6 +5,9 @@ import numpy as np
 from utils.operation import mean_squared_error, get_batch
 from utils.structs import OptimizationParm, Data
 
+class OptimizationParameters(object):
+    pass
+
 class LinerRegre(object):
     def __init__(self, data, parm):
         self.cost = []

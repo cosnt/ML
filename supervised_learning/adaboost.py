@@ -1,6 +1,9 @@
 import numpy as np
 import math
 
+class OptimizationParameters(object):
+    pass
+
 class Adaboost(object):
     def __init__(self,parm):
         pass
@@ -11,7 +14,7 @@ class Adaboost(object):
 def preset_parm():
     pass
 
-def mian():
+def main():
     parm = preset_parm()
     adaboost = Adaboost(parm)
     adaboost.predict()

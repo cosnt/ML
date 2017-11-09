@@ -3,6 +3,10 @@ from utils.operation import get_batch, sigmoid, multi2one, code_one_hot
 from utils.structs import OptimizationParm, Data
 '''softmax
 '''
+
+class OptimizationParameters(object):
+    pass
+
 class MutilLayerPreceptron(object):
     def __init__(self, data, parm, shape):
         self.data = data

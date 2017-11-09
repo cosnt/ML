@@ -7,6 +7,9 @@ from utils.operation import get_batch, sigmoid, multi2one, cross_entropy
 label is not one_hot
 '''
 
+class OptimizationParameters(object):
+    pass
+
 class LogRegres(object):
     def __init__(self, data, parm):
         self.data = data
