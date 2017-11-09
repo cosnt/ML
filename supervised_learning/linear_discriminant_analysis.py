@@ -3,7 +3,9 @@ import numpy as np
 from utils.structs import Data, OptimizationParm
 
 class OptimizationParameters(object):
-    pass
+    def __init__(self, max_step, learning_rate):
+        self.max_step = max_step
+        self.alpha = learning_rate
 
 class LDA(object):
     def __init__(self, data, parm):

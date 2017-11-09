@@ -8,12 +8,16 @@ basic function
 array*array point
 matmul(a,b) mat
 '''
+
+#激活函数
+###################################################
 def sigmoid(X):
     return 1/(1+np.exp(-X))
 
 def sigmoid_gradient(x):
     return sigmoid(x) * (1 - sigmoid(x))
 
+####################################################
 def accuracy_score(y_true, y_pred):
     correct = 0
     for i in range(len(y_true)):

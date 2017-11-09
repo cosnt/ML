@@ -18,12 +18,12 @@ class LogRegres(object):
         self.cost = []
 
     def fit(self):
-        feat_num, classfy_num = self.data.train_set.shape[1], max(self.data.train_label)+1
-        self.theta = np.zeros((feat_num, classfy_num))
+        feat_num, classes = self.data.train_set.shape[1], np.unique(self.data.train_label)
+        self.theta = np.zeros((feat_num, len(classes)))
         for step in range(self.parm.max_step):
             train_data_batch, train_label_batch = get_batch(self.data.train_data,
                                                             self.data.train_label, self.parm.batch_size)
-            for index in range(classfy_num):
+            for index in classes:
                 one_label = multi2one(train_label_batch, index)
                 self.theta[:,index] +=  self.parm.alpha*np.mean(
                     (one_label - sigmoid(np.matmul(train_data_batch,self.theta[:,index])))*train_data_batch,axis=0).T
