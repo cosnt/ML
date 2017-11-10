@@ -18,6 +18,7 @@ class NaiveBayes(object):
     def __init__(self, data, parm):
         self.data = data
         self.parm = parm
+        self.conditional_probability = {}
 
     def fit(self, mode='bernoulli'):
         if mode == 'bernoulli':
@@ -38,18 +39,15 @@ class NaiveBayes(object):
 
     def _fit_polynomial(self):
         #multi-multi
-        one_hot = code_one_hot(self.data.train_label)
-        self.alpha = np.mean(one_hot,axis=0)
-
-        #conditional_probability k(features num) * m(feature num) *n(class num)
-        self.conditional_probability = {}
+        label_one_hot = code_one_hot(self.data.train_label)
+        self.alpha = np.mean(label_one_hot,axis=0)
         feat_num = len(self.data.train_data[0])
+        #取消循环，三层矩阵（否定，矩阵不一定一样）
         for index in range(feat_num):
-            self.conditional_probability[str(index)] = self.data.train_data[:,index]
-
-
-        pass
-
+            #单个特征与类的条件概率
+            feat_one_hot = code_one_hot(self.data.train_data[:,index])
+            self.conditional_probability[str(index)] = np.matmul(feat_one_hot.T,label_one_hot)/\
+                                                       np.sum(label_one_hot,axis=0)
     def _fit_gaussian(self):
         pass
 
@@ -76,6 +74,12 @@ class NaiveBayes(object):
         print("the accuracy is :",accuracy)
 
     def _predict_polynomial(self):
+        predict_probability = 0
+        pass
+
+    def _get_class_probability(self, index):
+        matrix = self.conditional_probability[index]
+
         pass
 
     def _predict_gaussian(self):
