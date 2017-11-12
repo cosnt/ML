@@ -49,7 +49,17 @@ class NaiveBayes(object):
             self.conditional_probability[str(index)] = np.matmul(feat_one_hot.T,label_one_hot)/\
                                                        np.sum(label_one_hot,axis=0)
     def _fit_gaussian(self):
-        pass
+        #以类别产生矩阵
+        label_one_hot = code_one_hot(self.data.test_lebel)
+        feat_num = len(self.data.train_data[0])
+        self.alpha = np.mean(label_one_hot, axis=0)
+        classes_num = len(np.unique(self.data.train_label))
+        self.gaussian_mean = np.zeros((classes_num,feat_num))
+        self.gaussian_std = np.zeros((classes_num,feat_num))
+        for index in range(classes_num):
+            temp = self.data.test_data*label_one_hot[:,index]
+            self.gaussian_mean[index,:] = np.mean(temp, axis=0)
+            self.gaussian_std[index, :] = np.std(temp, axis=0)
 
     def _fit_gaussian_discriminant_analysis(self):
         pass
@@ -74,23 +84,43 @@ class NaiveBayes(object):
         print("the accuracy is :",accuracy)
 
     def _predict_polynomial(self):
-        predict_probability = 0
-        pass
-
-    def _get_class_probability(self, index):
-        matrix = self.conditional_probability[index]
-
-        pass
+        classes = np.unique(self.data.test_label)
+        test_nums, classes_num = self.data.test_data.shape[0], len(classes)
+        feat_num = self.data.test_data.shape[1]
+        predict_probability = np.ones((test_nums,classes_num))
+        for index in range(feat_num):
+            feat_one_hot = code_one_hot(self.data.test_data[:,index])
+            predict_probability *= (feat_one_hot*self.conditional_probability[str(index)])
+        predict_probability *= self.alpha
+        predict_probability = predict_probability/np.sum(predict_probability,axis=1)
+        predict_label = np.argmax(predict_probability,axis=1)
+        accuracy = np.mean(predict_label == self.data.test_label)
+        print('the accuracy is :',accuracy)
 
     def _predict_gaussian(self):
-        pass
+        classes = np.unique(self.data.test_label)
+        test_nums, classes_num = self.data.test_data.shape[0], len(classes)
+        feat_num = self.data.test_data.shape[1]
+        predict_probability = np.zeros((test_nums, classes_num))
+        for index in range(feat_num):
+            predict_probability *= self._get_gaussian_probability(index)
+        predict_probability *= self.alpha
+        predict_probability = predict_probability / np.sum(predict_probability, axis=1)
+        predict_label = np.argmax(predict_probability, axis=1)
+        accuracy = np.mean(predict_label == self.data.test_label)
+        print('the accuracy is :', accuracy)
+
+    def _get_gaussian_probability(self, index):
+        probability = (1/(np.sqrt(2*np.pi*self.gaussian_std[index,:])))\
+                      *np.exp(-np.power((self.data.test_data-self.gaussian_mean[index,:]),2)/(2*self.gaussian_std[index,:]))
+        return probability
 
 def main():
     file_name = '/mnt/'
     data, parm = Data(file_name), OptimizationParm(500,0.3)
     model = NaiveBayes(data, parm)
     model.fit()
-    model.predict()
+    model.predict('bernoulli')
 
 if __name__ == '__mian__':
     main()
