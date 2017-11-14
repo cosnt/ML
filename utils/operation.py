@@ -71,15 +71,11 @@ def mean_squared_error(y_true, y_pred):
     temp = y_true - y_pred
     return 0.5*temp*temp.T
 
-def euclidean_distance(x1, x2):
-    temp = x1 - x2
-    return np.sqrt(temp*temp.T)
-
 def code_one_hot(label):
     classes = np.unique(label)
     set_lens = len(label)
     one_hot = np.zeros((set_lens, len(classes)))
-    for index in range(set_lensß):
+    for index in range(set_lens):
         one_hot[index, label[index]] = 1
     return one_hot
 
@@ -91,6 +87,38 @@ def multi2one(labels,classfy_no):
 def cross_entropy(y_pred, y_true):
     temp = np.mean(y_true*np.log(y_pred)+(1-y_true)*np.log(1-y_pred),axis=0)
     return np.sum(temp,axis=1)
+
+##################distancs function################################
+#matrix
+def similarity(test_data, train_data, mode):
+    test_data_num, train_data_num = len(test_data), len(train_data)
+    similarity_matrix = np.zeros((test_data_num, train_data_num))
+    if mode == "euclidean":
+        for index in range(test_data_num):
+            similarity_matrix[index,:] = euclidean_distance(test_data[index,:],train_data)
+    elif mode == 'cosine':
+        for index in range(test_data_num):
+            similarity_matrix[index,:] = cosine_distance(test_data[index,:],train_data)
+    elif mode == 'pearson':
+        for index in range(test_data_num):
+            similarity_matrix[index,:] = pearson_distance(test_data[index,:],train_data)
+    return similarity_matrix
+
+def euclidean_distance(test_data, train_data):
+    kernel = train_data - test_data
+    return np.sqrt(np.sum(np.power(kernel,2),axis =1)).T
+
+def cosine_distance(test_data,train_data):
+    temp_a = np.sqrt(np.sum(np.power(test_data,2),axis=1))
+    temp_b = np.sqrt(np.sum(np.power(train_data,2),axis=1))
+    return train_data*test_data.T/(temp_a*temp_b)
+
+def pearson_distance(test_data,trian_data):
+    
+    pass
+
+
+####################################################################
 
 def split_data(data):
     pass
