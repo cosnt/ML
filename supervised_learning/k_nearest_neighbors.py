@@ -12,6 +12,8 @@ class KNN(object):
     def fit(self):
         pass
 
+    
+
     def predict(self):
         pass
 
