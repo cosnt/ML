@@ -5,8 +5,10 @@ class OptimizationParameters(object):
     pass
 
 class DecTree(object):
-    def __init__(self,parm):
-        pass
+    def __init__(self,data, parm):
+        self.data = data
+        self.parm = parm
+
     def fit(self):
         pass
     def predict(self):
@@ -14,10 +16,10 @@ class DecTree(object):
 def preset_parm():
     pass
 
-def mian():
+def main():
     parm = preset_parm()
     dec_tree = DecTree(parm)
-    adaboost.predict()
+    dec_tree.predict()
 
 if __name__ == '__main__':
     main()
