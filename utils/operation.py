@@ -90,7 +90,7 @@ def cross_entropy(y_pred, y_true):
 
 ##################distancs function################################
 #matrix
-def similarity(test_data, train_data, mode):
+def similarity(test_data, train_data, mode = "euclidean"):
     test_data_num, train_data_num = len(test_data), len(train_data)
     similarity_matrix = np.zeros((test_data_num, train_data_num))
     if mode == "euclidean":
