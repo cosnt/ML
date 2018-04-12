@@ -1,12 +1,15 @@
 import os
+import zipfile
 import numpy as np
 
 class OptimizationParm(object):
-    def __init__(self, max_step, leraning_rate, lambda_ = 0, mode = 'gradient_descent'):
+    def __init__(self, max_step, leraning_rate, lambda_ = 0, tolerance = None, mode = 'BSD'):
         self.max_step = max_step
         self.alpha = leraning_rate
         self.lambda_ = lambda_
         self.mode = mode
+        self.tolerance = tolerance
+
 
 class Data(object):
     def __init__(self, file_name, data_shape = None, data_type = None):
@@ -23,13 +26,13 @@ class Data(object):
 
     def load_data(self, file_name, data_shape, data_type):
         file_format = file_name.split('.')[-1]
-        temp_name = ''.join(file_name.split('.')[:-1]) + '.bin'
-        if os.path.isfile('../data_warehouse/local_data/'+ temp_name):
+        filename = os.path.join('../data_warehouse/local_data/',file_name)
+        if os.path.isfile(filename):
             self.load_bin(file_name, data_shape, data_type)
         elif file_format == 'csv' or 'txt':
-            self.load_csv(file_name)
+            self.load_csv(filename)
         elif file_format == 'txt':
-            self.load_txt(file_name)
+            self.load_txt(filename)
 
     def load_csv(self, file_name):
         with open(file_name, 'rb') as reader:
@@ -63,7 +66,9 @@ class Data(object):
         self.data.tofile(store_path+file_name)
         with open(fileparm_name,'ab') as writer:
             infors = file_name + '/t' + str(self.data.shape) + '/t' + str(np.dtype(self.data)) + '/n'
-            writer.write(infors)
+            writer.write(bytes(infors))
 
+    def extract(self,filepath,target):
+        file = zipfile.is_zipfile('./data_warehouse/local_data/leaf_classification/train.csv.zip',mode)
 
 

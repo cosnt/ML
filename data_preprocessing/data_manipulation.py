@@ -30,6 +30,7 @@ def norm_fit(data, parm):
         return (data - parm.mean_value)/parm.std_value
     else:
         raise("the methon not support")
+
 def transLabel(labels):
     label_set = set(labels)
     trans_label = dict()

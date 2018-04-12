@@ -24,14 +24,14 @@ def sigmoid_gradient(x):
 def BGD(train_data, opt_parm, theta = None):
     train_num, feat_num = train_data[0].shape
     if theta is None:
-        theta = np.matlib.zeros( (self.featNum, 1) )
+        theta = np.zeros((feat_num, 1))
     step, cost = 0, []
     for index in range(opt_parm.max_step):
         theta = theta + ((1.0/train_num)*opt_parm.alpha*(train_data[1] - sigmoid(train_data[0]*theta)).T*train_data[0]).T \
-                + (opt_parm.lam/train_um)*np.row_stack((0,theta[1:]))
+                + (opt_parm.lam/train_num)*np.row_stack((0,theta[1:]))
         temp = sigmoid(train_data*theta)
         cost.append( ((-1.0/train_num)*(train_data[0].T*np.log(temp) + (1 - train_data[1]).T*np.log(1 - temp)) + (self.lam/(2*train_um))*theta.T*theta)[0,0])
-        if (abs(cost[-1] - cost[-2]) < self.tolerance ):
+        if (abs(cost[-1] - cost[-2]) < opt_parm.tolerance ):
             break
     return theta, cost
 #stochastic gradient descent

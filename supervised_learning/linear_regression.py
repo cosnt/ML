@@ -6,7 +6,9 @@ from utils.operation import mean_squared_error, get_batch
 from utils.structs import OptimizationParm, Data
 
 class OptimizationParameters(object):
-    pass
+    def __init__(self, max_step, learning_rate):
+        self.alpha = learning_rate
+        self.max_step = max_step
 
 class LinerRegre(object):
     def __init__(self, data, parm):

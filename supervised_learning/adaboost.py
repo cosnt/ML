@@ -7,10 +7,13 @@ class OptimizationParameters(object):
 class Adaboost(object):
     def __init__(self,parm):
         pass
+
     def fit(self):
         pass
+
     def predict(self):
         pass
+
 def preset_parm():
     pass
 

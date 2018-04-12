@@ -2,7 +2,6 @@ import sys
 import math
 import numpy as np
 
-
 '''
 basic function
 array*array point
@@ -71,8 +70,9 @@ def mean_squared_error(y_true, y_pred):
     temp = y_true - y_pred
     return 0.5*temp*temp.T
 
-def code_one_hot(label):
-    classes = np.unique(label)
+def code_one_hot(label, classes=None):
+    if classes is None:
+        classes = np.unique(label)
     set_lens = len(label)
     one_hot = np.zeros((set_lens, len(classes)))
     for index in range(set_lens):
