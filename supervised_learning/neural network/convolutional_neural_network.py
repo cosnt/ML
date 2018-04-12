@@ -48,7 +48,7 @@ class CNN():
         dataSize = data.shape
         poolImage = np.matlib.zeros((dataSize[0]/poolSize[0], dataSize[1]/poolSize[1]))
         for i in range(0, dataSize[0], poolSize[0]):
-            for j in range(0, dataySize[1], poolSize[1]):
+            for j in range(0, dataSize[1], poolSize[1]):
                 poolImage[i/2, j/2] = np.sum(np.multiply(data[i: i+poolSize[0], j:j+poolSize[1]], pool))
         return poolImage
 
@@ -61,8 +61,6 @@ class CNN():
         return bias
 
     def convLayer(self, data):
-        for
-
         pass
 
     def poolLayer(self, data):
