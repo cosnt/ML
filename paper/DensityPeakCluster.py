@@ -51,12 +51,21 @@ def get_dc(distance):
     :param distance: 距离举证
     :return: dc值
     """
-    temp  = []
-    for index, value in enumerate(distance):
-        temp.extend(value[index+1:])
-    sort_temp = np.sort(temp)
-    index_k = round(0.02*len(sort_temp))
-    return sort_temp[index_k]
+    min_dis = 0
+    max_dis = np.max(distance)
+    dc = (max_dis+min_dis)/2
+    sample_nums = distance.shape[0]
+    while True:
+        nums = np.sum(distance<dc)-sample_nums
+        mean_nums = nums/sample_nums/2
+        if mean_nums < 0.019*sample_nums:
+            min_dis = dc
+        elif mean_nums > 0.02*sample_nums:
+            max_dis = dc
+        else:
+            break
+        dc = (max_dis + min_dis) / 2
+    return dc
 
 def get_local_density_sigma(distance, dc, kernel = 'gaussian'):
     """
@@ -143,16 +152,28 @@ def density_peak_cluster(X):
     return local_density, sigma, labels, class_label
 
 def plot_scatter(X, density, sigma,labels,class_label):
-    plt.figure(1)
-    plt.scatter(X[:,0], X[:,1], c=labels)
-    plt.figure(2)
-    plt.scatter(density,sigma)
-    plt.figure(3)
-    value = density*sigma
+    fig = plt.figure()
+    ax_1 = fig.add_subplot(2, 2, 1)
+    ax_1.scatter(X[:,0], X[:,1], c=labels)
+    ax_1.set_xlabel('x')
+    ax_1.set_ylabel('y')
+
+    ax_2 = fig.add_subplot(2, 2, 2)
+    ax_2.scatter(density,sigma,alpha=0.5)
+    ax_2.set_xlabel('p')
+    ax_2.set_ylabel('$\delta$')
+
+    value = density * sigma
     value_sorted = -np.sort(-value)
-    plt.scatter(range(len(value_sorted)),value_sorted)
-    plt.figure(4)
-    plt.scatter(X[:,0],X[:,1],c=class_label)
+    ax_3 = fig.add_subplot(2, 2, 3)
+    ax_3.scatter(range(len(value_sorted)),value_sorted,alpha=0.5)
+    ax_3.set_xlabel(u'number')
+    ax_3.set_ylabel(u'$\gamma$')
+
+    ax_4 = fig.add_subplot(2, 2, 4)
+    ax_4.scatter(X[:, 0], X[:, 1], c=class_label, alpha=0.5)
+    ax_1.set_xlabel('x')
+    ax_1.set_ylabel('y')
     plt.show()
 
 if __name__ == "__main__":
