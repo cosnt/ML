@@ -1,7 +1,9 @@
+import sys
+sys.path.append('../')
 import numpy as np
 
 from utils.structs import Data, OptimizationParm
-from utils.operation import code_one_hot
+from utils.operation import code_one_hot, split_data
 
 
 class OptimizationParameters(object):
@@ -34,7 +36,7 @@ class NaiveBayes(object):
 
     def _fit_bernoulli(self):
         self.alpha = np.mean(self.data.train_label)
-        self.theta_y0 = np.sum(self.data.trian_data*self.data.train_label,axis=0)/np.sum(self.data.train_label)
+        self.theta_y0 = np.sum(self.data.train_data*self.data.train_label,axis=0)/np.sum(self.data.train_label)
         self.theta_y1 = np.sum((1-self.data.train_data)*self.data.train_label,axis=0)/np.sum(self.data.train_label)
 
     def _fit_polynomial(self):
@@ -116,11 +118,12 @@ class NaiveBayes(object):
         return probability
 
 def main():
-    file_name = '/mnt/'
+    file_name = 'flame.txt'
     data, parm = Data(file_name), OptimizationParm(500,0.3)
+    split_data(data,0.8)
     model = NaiveBayes(data, parm)
     model.fit()
     model.predict('bernoulli')
 
-if __name__ == '__mian__':
+if __name__ == '__main__':
     main()

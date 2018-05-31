@@ -114,14 +114,20 @@ def cosine_distance(test_data,train_data):
     return train_data*test_data.T/(temp_a*temp_b)
 
 def pearson_distance(test_data,trian_data):
-    
+
     pass
 
 
 ####################################################################
 
-def split_data(data):
-    pass
+def split_data(data, rate = 0.7):
+    sample_nums = len(data.data)
+    np.random.shuffle(data.data)
+    train_index = int(rate*sample_nums)
+    data.train_data = data.data[:train_index,:-1]
+    data.train_label = data.data[:train_index:,-1]
+    data.test_data = data.data[train_index:,:-1]
+    data.test_label = data.data[train_index:,-1]
 
 def loss():
     pass

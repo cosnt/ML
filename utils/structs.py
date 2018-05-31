@@ -27,12 +27,14 @@ class Data(object):
     def load_data(self, file_name, data_shape, data_type):
         file_format = file_name.split('.')[-1]
         filename = os.path.join('../data_warehouse/local_data/',file_name)
-        if os.path.isfile(filename):
+
+        if os.path.isfile(filename[:-len(file_format)]+'bin'):
             self.load_bin(file_name, data_shape, data_type)
-        elif file_format == 'csv' or 'txt':
+        elif file_format == 'csv':
             self.load_csv(filename)
         elif file_format == 'txt':
             self.load_txt(filename)
+        return self.data
 
     def load_csv(self, file_name):
         with open(file_name, 'rb') as reader:
@@ -47,12 +49,12 @@ class Data(object):
     def load_txt(self,file_name):
         with open(file_name, 'rb') as reader:
             lines = reader.readlines()
-            set_lens, feat_num = len(lines), len(lines[0])
+            set_lens, feat_num = len(lines), len(lines[0].split())
             self.data = np.zeros((set_lens, feat_num))
-            for index in range(set_lens):
-                temp = lines[index]
-                self.data[index,:] = temp
-        self.save_as_bin(file_name)
+            for index_x, line in enumerate(lines):
+                for index_y, value in enumerate(line.split()):
+                    self.data[index_x, index_y] = np.float(value)
+        #self.save_as_bin(file_name)
 
     def load_bin(self, file_name, data_shape, data_type):
         file_name = '../data_warehouse/local_data/' + file_name
@@ -70,5 +72,3 @@ class Data(object):
 
     def extract(self,filepath,target):
         file = zipfile.is_zipfile('./data_warehouse/local_data/leaf_classification/train.csv.zip',mode)
-
-
