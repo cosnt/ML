@@ -1,3 +1,4 @@
+import re
 import os
 import sys
 import numpy as np
@@ -29,6 +30,18 @@ class LinerRegre(object):
         predict_value = np.matmul(self.data.testSet, self.theta)
         loss = mean_squared_error(predict_value, self.data.testLabel)
         print('the loss is: ', loss)
+
+def read_txt(filename):
+    with open(filename, 'r') as fr:
+        lines = fr.readlines()
+        data = np.zeros((len(lines),len(lines[0].split())))
+        for index, line in enumerate(lines):
+            data[index,:] = list(map(float,re.split(' |,',line)))
+    return data
+
+
+dataSet = read_txt('./dataSet/flame.txt')
+dataSet[:,-1] += 1
 
 def main():
     file_name = ''
